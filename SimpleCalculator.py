@@ -1,158 +1,78 @@
+import tkinter as tk
+from tkinter import messagebox
 import math
 
+def calculate(operation):
+    try:
+        num1 = float(entry1.get()) if entry1.get() else None
+        num2 = float(entry2.get()) if entry2.get() else None
+        result = None
 
-print('This is a simple calculator')
-print("============================")
-def add():
-    num1 = float(input('Enter the first number: '))
-    num2 = float(input('Enter the second number: '))
-    print("The sum of " + str(num1) + " and " + str(num2) + " =", num1 + num2)
+        if operation == "ADD":
+            result = num1 + num2
+        elif operation == "SUB":
+            result = num1 - num2
+        elif operation == "MULT":
+            result = num1 * num2
+        elif operation == "DIV":
+            if num2 == 0:
+                raise ValueError("Cannot divide by zero.")
+            result = num1 / num2
+        elif operation == "SQR":
+            result = num1 ** 2
+        elif operation == "SQRT":
+            if num1 < 0:
+                raise ValueError("Cannot calculate square root of a negative number.")
+            result = math.sqrt(num1)
+        elif operation == "CUB":
+            result = num1 ** 3
+        elif operation == "CBRT":
+            result = math.pow(num1, 1/3)
+        elif operation == "LOG":
+            if num1 <= 0:
+                raise ValueError("Logarithm undefined for non-positive numbers.")
+            result = math.log10(num1)
+        elif operation == "SIN":
+            result = math.sin(math.radians(num1))
+        elif operation == "COS":
+            result = math.cos(math.radians(num1))
+        elif operation == "TAN":
+            result = math.tan(math.radians(num1))
+        elif operation == "POW":
+            result = math.pow(num1, num2)
 
-def sub():
-    num1 = float(input('Enter the first number: '))
-    num2 = float(input('Enter the second number: '))
-    print("The difference of " + str(num1) + " and " + str(num2) + " =", num1 - num2)
+        result_label.config(text=f"Result: {result}")
 
-def mult():
-    num1 = float(input('Enter the first number: '))
-    num2 = float(input('Enter the second number: '))
-    print("The product of " + str(num1) + " and " + str(num2) + " =", num1 * num2)
+    except ValueError as e:
+        messagebox.showerror("Error", str(e))
+    except Exception as e:
+        messagebox.showerror("Error", "An error occurred. Please check your input.")
 
-def div():
-    num1 = float(input('Enter the first number: '))
-    num2 = float(input('Enter the second number: '))
-    if num2 == 0:
-        print("Cannot divide by zero, enter a non-zero number")
-    else:
-        print("The division of " + str(num1) + " and " + str(num2) + " =", num1 / num2)
+# Create the main application window
+root = tk.Tk()
+root.title("Calculator GUI")
+root.geometry("400x500")
 
-def sqr():
-    num = float(input('Enter a number: '))
-    if num == 0:
-        print("The square of 0 is 0")
-    else:
-        print("The square of " + str(num) + " =", num * num)
+# Input fields
+entry1_label = tk.Label(root, text="First Number:")
+entry1_label.pack()
+entry1 = tk.Entry(root)
+entry1.pack()
 
-def sqrt():
-    num = float(input('Enter a number: '))
-    if num < 0:
-        print("Not a number")
-    elif num == 0:
-        print("The squareroot of 0 is 0")
-    else:
-        print("The squareroot of " + str(num) + " =", math.sqrt(num))
+entry2_label = tk.Label(root, text="Second Number (if applicable):")
+entry2_label.pack()
+entry2 = tk.Entry(root)
+entry2.pack()
 
-def cub():
-    num = float(input('Enter a number: '))
-    if num == 0:
-        print("The cube of 0 is 0")
-    else:
-        print("The cube of " + str(num) + " =", num * num * num)
+# Buttons for operations
+operations = ["ADD", "SUB", "MULT", "DIV", "SQR", "SQRT", "CUB", "CBRT", "LOG", "SIN", "COS", "TAN", "POW"]
+for op in operations:
+    button = tk.Button(root, text=op, command=lambda op=op: calculate(op))
+    button.pack(pady=5)
 
-def cbrt():
-    num = float(input('Enter a number: '))
-    if num == 0:
-        print("The cuberoot of 0 is 0")
-    else:
-        print("The cuberoot of " + str(num) + " =", math.cbrt(num))
+# Result display
+result_label = tk.Label(root, text="Result: ", font=("Arial", 14))
+result_label.pack(pady=10)
 
-def log():
-    num = float(input('Enter a number: '))
-    if num <= 0:
-        print("Not a number!")
-    else:
-        print("The logarithm of " + str(num) + " =", math.log10(num))
-
-def sin():
-    num = float(input('Enter a number: '))
-    print("The sine of " + str(num) + " =", math.sin(num))
-
-def cos():
-    num = float(input('Enter a number: '))
-    print("The cosine of " + str(num) + " =", math.cos(num))
-
-def tan():
-    num = float(input('Enter a number: '))
-    print("The tangent of " + str(num) + " =", math.tan(num))
-
-def asin():
-    num = float(input('Enter a number: '))
-    print("The sine inverse of " + str(num) + " =", math.asin(num))
-
-def acos():
-    num = float(input('Enter a number: '))
-    print("The cosine inverse of " + str(num) + " =", math.acos(num))
-
-def atan():
-    num = float(input('Enter a number: '))
-    print("The tangent inverse of " + str(num) + " =", math.atan(num))
-
-def pow():
-    num = float(input('Enter a number: '))
-    exp_num = float(input('Enter an exponent number: '))
-    print("The power of " + str(num) + " to " + str(exp_num) + " =", math.pow(num, exp_num))
-
-while True:
-
-    print("Enter operation to perform: ")
-    print("")
-    print("1. ADD")
-    print("2. SUB")
-    print("3. MULT")
-    print("4. DIV")
-    print("5. SQR")
-    print("6. SQRT")
-    print("7. CUB")
-    print("8. CBRT")
-    print("9. LOG")
-    print("10. SIN")
-    print("11. COS")
-    print("12. TAN")
-    print("13. ASIN")
-    print("14. ACOS")
-    print("15. ATAN")
-    print("16. POW")
-
-    print("")
-
-    operation = input()
-    if operation == "1":
-        add()
-    elif operation == "2":
-        sub()
-    elif operation == "3":
-        mult()
-    elif operation == "4":
-        div()
-    elif operation == "5":
-        sqr()
-    elif operation == "6":
-        sqrt()
-    elif operation == "7":
-        cub()
-    elif operation == "8":
-        cbrt()
-    elif operation == "9":
-        log()
-    elif operation == "10":
-        sin()
-    elif operation == "11":
-        cos()
-    elif operation == "12":
-        tan()
-    elif operation == "13":
-        asin()
-    elif operation == "14":
-        acos()
-    elif operation == "15":
-        atan()
-    elif operation == "16":
-        pow()
-    else:
-        print("Invalid operation, please try again!")
-
-    another_operation = input("Do you want to perform another operation? (yes/no): ").lower()
-    if another_operation != "yes":
-        break
-
-
+# Start the main loop
+root.mainloop()
